@@ -8,8 +8,6 @@ bibliography: bibliography.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::write_bib(c("base", "wooldridge", "tidyverse", "stargazer", "lmtest", "rmarkdown", 
-                   "ggplot2"), file = "bibliography.bib")
 ```
 
 The experiment uses @R-base and some packages developed by @R-ggplot2, @R-rmarkdown, @R-lmtest, @R-stargazer, @R-tidyverse, and @R-wooldridge.
