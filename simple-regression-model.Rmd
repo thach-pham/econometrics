@@ -1,0 +1,139 @@
+---
+title: "Simple Regression Model"
+author: "Thach Pham"
+date: "14/11/2018"
+output: pdf_document
+bibliography: bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::write_bib(c("base", "wooldridge", "tidyverse", "stargazer", "lmtest", "rmarkdown", 
+                   "ggplot2"), file = "bibliography.bib")
+```
+
+The analysis uses the packages developed by @R-base, @R-ggplot2, @R-rmarkdown, @R-lmtest, @R-stargazer, @R-tidyverse, and @R-wooldridge.
+```{r, message = F, warning = F}
+library(wooldridge)
+library(tidyverse)
+library(stargazer)
+library(lmtest)
+```
+
+# Descriptive Statistics of ceosal1 data
+```{r, message = F, warning = F}
+# Descriptive Statistics
+data("ceosal1")
+desc.ceosal1 <- select(ceosal1, -c(indus, finance, consprod, utility))
+stargazer(desc.ceosal1, type = "text", style = "qje", title = "Descriptive Statistics",
+          digits = 4, out = "SRO/ceosal1-sum.doc")
+```
+
+# Salary Plot and Distribution
+```{r, message = F, warning = F}
+# Salary Plot
+(salary <- ggplot(desc.ceosal1, aes(x = 1:nrow(desc.ceosal1), y = salary)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  labs(x = "", y = "CEO Salary", title = "CEO Salary"))
+ggsave("SRO/CEO Salary.png", salary)
+
+# Salary Distribution
+(salary.dist <- ggplot(desc.ceosal1, aes(salary)) +
+  geom_histogram(aes(y = ..count../sum(..count..))) + 
+  theme(legend.position = "none") +
+  labs(x = "CEO Salary", y = "Frequency", title = "CEO Salary Distribution") +
+  geom_density(aes(y = ..scaled..)) +
+  geom_vline(aes(xintercept = mean(salary)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(salary)), color = "blue", linetype = "dashed", size = 1))
+ggsave("SRO/CEO Salary Distribution.png", salary.dist)
+
+# Logarithm of Salary
+(log.salary <- ggplot(desc.ceosal1, aes(x = 1:nrow(desc.ceosal1), y = lsalary)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  labs(x = "", y = "CEO Log Salary", title = "CEO Log Salary"))
+ggsave("SRO/Log CEO Salary.png", log.salary)
+
+# Log Salary Distribution
+(log.salary.dist <- ggplot(desc.ceosal1, aes(lsalary)) +
+  geom_histogram(aes(y = ..count../sum(..count..))) + 
+  theme(legend.position = "none") +
+  labs(x = "CEO Log Salary", y = "Frequency", title = "CEO Log Salary Distribution") +
+  geom_density(aes(y = ..scaled..)) +
+  geom_vline(aes(xintercept = mean(lsalary)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(lsalary)), color = "blue", linetype = "dashed", size = 1))
+ggsave("SRO/CEO Log Salary Distribution.png", log.salary.dist)
+```
+
+# ROE Plot and Distribution
+```{r, message = F, warning = F}
+# ROE Plot
+(roe <- ggplot(desc.ceosal1, aes(x = 1:nrow(desc.ceosal1), y = roe)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  labs(x = "", y = "ROE", title = "ROE"))
+ggsave("SRO/roe.png", roe)
+
+# ROE Distribution
+(roe.dist <- ggplot(desc.ceosal1, aes(roe)) +
+  geom_histogram(aes(y = ..count../sum(..count..))) + 
+  theme(legend.position = "none") +
+  labs(x = "ROE", y = "Frequency", title = "ROE Distribution") +
+  geom_density(aes(y = ..scaled..)) +
+  geom_vline(aes(xintercept = mean(roe)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(roe)), color = "blue", linetype = "dashed", size = 1))
+ggsave("SRO/ROE Distribution.png", roe.dist)
+```
+
+# Simple OLS Estimations
+```{r, message = F, warning = F}
+# Salary vs ROE
+model1 <- lm(salary ~ roe, data = desc.ceosal1)
+stargazer(model1, title = "CEO Salary vs ROE", type = "text", style = "qje",
+          out = "SRO/Model 1: Salary vs ROE.doc")
+(regline.model1 <- ggplot(desc.ceosal1, aes(x = roe, y = salary)) +
+  geom_point() +
+  labs(x = "ROE", y = "CEO Salary", title = "Modlel 1: CEO Salary vs ROE") + 
+  geom_smooth(method = "lm"))
+ggsave("SRO/Model 1: CEO Salary vs ROE.png", regline.model1)
+
+# Log Salary vs ROE
+model2 <- lm(lsalary ~ roe, data = desc.ceosal1)
+stargazer(model2, title = "Log CEO Salary vs ROE", type = "text", style = "qje",
+          out = "SRO/Model 2: Log Salary vs ROE.doc")
+(regline.model2 <- ggplot(desc.ceosal1, aes(x = roe, y = lsalary)) +
+  geom_point() +
+  labs(x = "ROE", y = "CEO Log Salary", title = "Model 2: CEO Log Salary vs ROE") + 
+  geom_smooth(method = "lm"))
+ggsave("SRO/Model 2: CEO Log Salary vs ROE.png", regline.model2)
+```
+
+# Checking Normal Distribution of Error Terms
+```{r, message = F, warning = F}
+# Checking normal distribution of error term model 1
+shapiro.test(residuals(model1))
+(error.model1 <- ggplot(model1, aes(sample = model1$residuals)) +
+  stat_qq(col = "blue") +
+  stat_qq_line(col = "red", lty = 2) +
+  labs(x = "Theoretical Quantiles", y = "Sample Quantiles", title = "QQ Plot ERR1"))
+ggsave("SRO/QQ Plot ERR1.png", error.model1)
+
+# Checking normal distribution of error term model 2
+shapiro.test(residuals(model2))
+(error.model2 <- ggplot(model2, aes(sample = model2$residuals)) +
+  stat_qq(col = "blue") +
+  stat_qq_line(col = "red", lty = 2) +
+  labs(x = "Theoretical Quantiles", y = "Sample Quantiles", title = "QQ Plot ERR2"))
+ggsave("SRO/QQ Plot ERR2.png", error.model2)
+```
+
+# Test of Heteroskedasticity
+```{r, message = F, warning = F}
+bptest(model1)
+bptest(model2)
+```
+
+# References
+
+

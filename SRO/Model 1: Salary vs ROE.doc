@@ -1,0 +1,20 @@
+
+CEO Salary vs ROE
+==========================================================
+                                    salary                
+----------------------------------------------------------
+roe                                18.501*                
+                                   (11.123)               
+                                                          
+Constant                          963.191***              
+                                  (213.240)               
+                                                          
+N                                    209                  
+R2                                  0.013                 
+Adjusted R2                         0.008                 
+Residual Std. Error          1,366.555 (df = 207)         
+F Statistic                  2.767* (df = 1; 207)         
+==========================================================
+Notes:              ***Significant at the 1 percent level.
+                     **Significant at the 5 percent level.
+                     *Significant at the 10 percent level.

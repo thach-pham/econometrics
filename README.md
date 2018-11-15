@@ -1,1 +1,1 @@
-# Econometrics
+Experiment some fun stuff with Econometrics and R. Here we go!

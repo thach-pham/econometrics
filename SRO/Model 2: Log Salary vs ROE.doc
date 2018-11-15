@@ -1,0 +1,20 @@
+
+Log CEO Salary vs ROE
+==========================================================
+                                   lsalary                
+----------------------------------------------------------
+roe                                0.014***               
+                                   (0.005)                
+                                                          
+Constant                           6.712***               
+                                   (0.087)                
+                                                          
+N                                    209                  
+R2                                  0.043                 
+Adjusted R2                         0.039                 
+Residual Std. Error            0.555 (df = 207)           
+F Statistic                 9.408*** (df = 1; 207)        
+==========================================================
+Notes:              ***Significant at the 1 percent level.
+                     **Significant at the 5 percent level.
+                     *Significant at the 10 percent level.
