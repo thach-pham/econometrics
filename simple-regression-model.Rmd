@@ -12,7 +12,7 @@ knitr::write_bib(c("base", "wooldridge", "tidyverse", "stargazer", "lmtest", "rm
                    "ggplot2"), file = "bibliography.bib")
 ```
 
-The analysis uses the packages developed by @R-base, @R-ggplot2, @R-rmarkdown, @R-lmtest, @R-stargazer, @R-tidyverse, and @R-wooldridge.
+The analysis uses @R-base and some packages developed by @R-ggplot2, @R-rmarkdown, @R-lmtest, @R-stargazer, @R-tidyverse, and @R-wooldridge.
 ```{r, message = F, warning = F}
 library(wooldridge)
 library(tidyverse)
