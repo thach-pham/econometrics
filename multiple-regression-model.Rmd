@@ -1,0 +1,104 @@
+---
+title: "Multiple Regression Model"
+author: "Thach Pham"
+date: "15/11/2018"
+output: pdf_document
+bibliography: bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=F, warning=F}
+library(wooldridge)
+library(tidyverse)
+library(stargazer)
+library(GGally)
+```
+
+# Descriptive Statistics of wage1 data
+```{r, message=F, warning=F}
+data(wage1)
+desc.wage1 <- select(wage1, c(wage, educ, exper, tenure, lwage))
+stargazer(desc.wage1, type = "text", style = "qje", title = "Descriptive Statistics",
+          digits = 4, out = "MRO/Descriptive Statistics.doc")
+```
+
+# Distribution of Wage
+```{r, message=F, warning=F}
+(wage.dist <- ggplot(desc.wage1, aes(wage)) + 
+  geom_histogram(aes(y = ..density..), bindwidth = 0.5, colour = "blue", fill = "white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  labs(x = "Wage", y = "Density", title = "Wage Distribution") +
+  geom_vline(aes(xintercept = mean(wage)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(wage)), color = "blue", linetype ="dashed", size = 1))
+ggsave("MRO/Wage Distribution.png", wage.dist)
+```
+
+# Distribution of Log Wage
+```{r, message=F, warning=F}
+(lwage.dist <- ggplot(desc.wage1, aes(lwage)) + 
+  geom_histogram(aes(y = ..density..), bindwidth = 0.5, colour = "blue", fill = "white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  labs(x = "Log Wage", y = "Density", title = "Log Wage Distribution") +
+  geom_vline(aes(xintercept = mean(lwage)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(lwage)), color = "blue", linetype ="dashed", size = 1))
+ggsave("MRO/Log Wage Distribution.png", lwage.dist)
+```
+
+# Distribution of Education
+```{r, message=F, warning=F}
+(educ.dist <- ggplot(desc.wage1, aes(educ)) + 
+  geom_histogram(aes(y = ..density..), bindwidth = 0.5, colour = "blue", fill = "white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  labs(x = "Education", y = "Density", title = "Education Distribution") +
+  geom_vline(aes(xintercept = mean(educ)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(educ)), color = "blue", linetype ="dashed", size = 1))
+ggsave("MRO/Education Distribution.png", educ.dist)
+```
+
+# Distribution of Experience
+```{r, message=F, warning=F}
+(exper.dist <- ggplot(desc.wage1, aes(exper)) + 
+  geom_histogram(aes(y = ..density..), bindwidth = 0.5, colour = "blue", fill = "white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  labs(x = "Experience", y = "Density", title = "Experience Distribution") +
+  geom_vline(aes(xintercept = mean(exper)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(exper)), color = "blue", linetype ="dashed", size = 1))
+ggsave("MRO/Experience Distribution.png", exper.dist)
+```
+
+# Distribution of Tenure
+```{r}
+(tenure.dist <- ggplot(desc.wage1, aes(tenure)) + 
+  geom_histogram(aes(y = ..density..), bindwidth = 0.5, colour = "blue", fill = "white") +
+  geom_density(alpha = 0.2, fill = "#FF6666") +
+  labs(x = "Tenure", y = "Density", title = "Tenure Distribution") +
+  geom_vline(aes(xintercept = mean(tenure)), color = "red", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = median(tenure)), color = "blue", linetype ="dashed", size = 1))
+ggsave("MRO/Tenure Distribution.png", tenure.dist)
+```
+
+# Covariance and Correlation Matrix
+```{r}
+cov(desc.wage1)
+```
+
+# Correlation Matrix
+```{r, message=F, warning=F}
+ggpairs(desc.wage1, title = "Correlation Matrix")
+```
+
+# Regression Models
+```{r}
+# Model 1
+model1 <- lm(wage ~ educ + exper + tenure, data = desc.wage1)
+stargazer(model1, type = "text", title = "lm(wage ~ educ + exper + tenure)", 
+          style = "qje", out = "MRO/model1.doc")
+
+# Model 2
+```
+
+
+

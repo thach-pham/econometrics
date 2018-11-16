@@ -40,7 +40,7 @@ ggsave("SRO/CEO Salary.png", salary)
 (salary.dist <- ggplot(desc.ceosal1, aes(salary)) +
   geom_histogram(aes(y = ..count../sum(..count..))) + 
   theme(legend.position = "none") +
-  labs(x = "CEO Salary", y = "Frequency", title = "CEO Salary Distribution") +
+  labs(x = "CEO Salary", y = "Density", title = "CEO Salary Distribution") +
   geom_density(aes(y = ..scaled..)) +
   geom_vline(aes(xintercept = mean(salary)), color = "red", linetype = "dashed", size = 1) +
   geom_vline(aes(xintercept = median(salary)), color = "blue", linetype = "dashed", size = 1))
@@ -51,13 +51,13 @@ ggsave("SRO/CEO Salary Distribution.png", salary.dist)
   geom_point() +
   theme(legend.position = "none") +
   labs(x = "", y = "CEO Log Salary", title = "CEO Log Salary"))
-ggsave("SRO/Log CEO Salary.png", log.salary)
+ggsave("SRO/CEO Log Salary.png", log.salary)
 
 # Log Salary Distribution
 (log.salary.dist <- ggplot(desc.ceosal1, aes(lsalary)) +
   geom_histogram(aes(y = ..count../sum(..count..))) + 
   theme(legend.position = "none") +
-  labs(x = "CEO Log Salary", y = "Frequency", title = "CEO Log Salary Distribution") +
+  labs(x = "CEO Log Salary", y = "Density", title = "CEO Log Salary Distribution") +
   geom_density(aes(y = ..scaled..)) +
   geom_vline(aes(xintercept = mean(lsalary)), color = "red", linetype = "dashed", size = 1) +
   geom_vline(aes(xintercept = median(lsalary)), color = "blue", linetype = "dashed", size = 1))
@@ -71,13 +71,13 @@ ggsave("SRO/CEO Log Salary Distribution.png", log.salary.dist)
   geom_point() +
   theme(legend.position = "none") +
   labs(x = "", y = "ROE", title = "ROE"))
-ggsave("SRO/roe.png", roe)
+ggsave("SRO/ROE.png", roe)
 
 # ROE Distribution
 (roe.dist <- ggplot(desc.ceosal1, aes(roe)) +
   geom_histogram(aes(y = ..count../sum(..count..))) + 
   theme(legend.position = "none") +
-  labs(x = "ROE", y = "Frequency", title = "ROE Distribution") +
+  labs(x = "ROE", y = "Density", title = "ROE Distribution") +
   geom_density(aes(y = ..scaled..)) +
   geom_vline(aes(xintercept = mean(roe)), color = "red", linetype = "dashed", size = 1) +
   geom_vline(aes(xintercept = median(roe)), color = "blue", linetype = "dashed", size = 1))
@@ -88,23 +88,23 @@ ggsave("SRO/ROE Distribution.png", roe.dist)
 ```{r, message = F, warning = F}
 # Salary vs ROE
 model1 <- lm(salary ~ roe, data = desc.ceosal1)
-stargazer(model1, title = "CEO Salary vs ROE", type = "text", style = "qje",
-          out = "SRO/Model 1: Salary vs ROE.doc")
+stargazer(model1, title = "Model Estimation: lm(salary ~ roe)", type = "text", 
+          style = "qje", out = "SRO/Model 1.doc")
 (regline.model1 <- ggplot(desc.ceosal1, aes(x = roe, y = salary)) +
   geom_point() +
-  labs(x = "ROE", y = "CEO Salary", title = "Modlel 1: CEO Salary vs ROE") + 
+  labs(x = "ROE", y = "CEO Salary", title = "Regresssion Line: lm(salary ~ roe)") + 
   geom_smooth(method = "lm"))
-ggsave("SRO/Model 1: CEO Salary vs ROE.png", regline.model1)
+ggsave("SRO/Regression Line 1.png", regline.model1)
 
 # Log Salary vs ROE
 model2 <- lm(lsalary ~ roe, data = desc.ceosal1)
-stargazer(model2, title = "Log CEO Salary vs ROE", type = "text", style = "qje",
-          out = "SRO/Model 2: Log Salary vs ROE.doc")
+stargazer(model2, title = "Model Estimation: lm(lsalary ~ roe)", type = "text", 
+          style = "qje", out = "SRO/Model 2.doc")
 (regline.model2 <- ggplot(desc.ceosal1, aes(x = roe, y = lsalary)) +
   geom_point() +
-  labs(x = "ROE", y = "CEO Log Salary", title = "Model 2: CEO Log Salary vs ROE") + 
+  labs(x = "ROE", y = "CEO Log Salary", title = "Regression Line: lm(lsalary ~ roe)") + 
   geom_smooth(method = "lm"))
-ggsave("SRO/Model 2: CEO Log Salary vs ROE.png", regline.model2)
+ggsave("SRO/Regression Line 2.png", regline.model2)
 ```
 
 # Checking Normal Distribution of Error Terms
