@@ -88,21 +88,21 @@ ggsave("SRO/ROE Distribution.png", roe.dist)
 ```{r, message = F, warning = F}
 # Salary vs ROE
 model1 <- lm(salary ~ roe, data = desc.ceosal1)
-stargazer(model1, title = "Model Estimation: lm(salary ~ roe)", type = "text", 
+stargazer(model1, title = "Model 1: lm(salary ~ roe)", type = "text", 
           style = "qje", out = "SRO/Model 1.doc")
 (regline.model1 <- ggplot(desc.ceosal1, aes(x = roe, y = salary)) +
   geom_point() +
-  labs(x = "ROE", y = "CEO Salary", title = "Regresssion Line: lm(salary ~ roe)") + 
+  labs(x = "ROE", y = "CEO Salary", title = "Regresssion Line 1: lm(salary ~ roe)") + 
   geom_smooth(method = "lm"))
 ggsave("SRO/Regression Line 1.png", regline.model1)
 
 # Log Salary vs ROE
 model2 <- lm(lsalary ~ roe, data = desc.ceosal1)
-stargazer(model2, title = "Model Estimation: lm(lsalary ~ roe)", type = "text", 
+stargazer(model2, title = "Model 2: lm(lsalary ~ roe)", type = "text", 
           style = "qje", out = "SRO/Model 2.doc")
 (regline.model2 <- ggplot(desc.ceosal1, aes(x = roe, y = lsalary)) +
   geom_point() +
-  labs(x = "ROE", y = "CEO Log Salary", title = "Regression Line: lm(lsalary ~ roe)") + 
+  labs(x = "ROE", y = "CEO Log Salary", title = "Regression Line 2: lm(lsalary ~ roe)") + 
   geom_smooth(method = "lm"))
 ggsave("SRO/Regression Line 2.png", regline.model2)
 ```
