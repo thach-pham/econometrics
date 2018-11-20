@@ -1,0 +1,26 @@
+
+lm(wage ~ educ + exper + tenure)
+==========================================================
+                                     wage                 
+----------------------------------------------------------
+educ                               0.599***               
+                                   (0.051)                
+                                                          
+exper                               0.022*                
+                                   (0.012)                
+                                                          
+tenure                             0.169***               
+                                   (0.022)                
+                                                          
+Constant                          -2.873***               
+                                   (0.729)                
+                                                          
+N                                    526                  
+R2                                  0.306                 
+Adjusted R2                         0.302                 
+Residual Std. Error            3.084 (df = 522)           
+F Statistic                76.873*** (df = 3; 522)        
+==========================================================
+Notes:              ***Significant at the 1 percent level.
+                     **Significant at the 5 percent level.
+                     *Significant at the 10 percent level.

@@ -10,11 +10,18 @@ bibliography: bibliography.bib
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+The experiment uses @R-base and some packages developed by @R-ggplot2, @R-rmarkdown, @R-GGally, @R-lmtest, @R-car, @R-stargazer, @R-tidyverse, and @R-wooldridge.
 ```{r, message=F, warning=F}
 library(wooldridge)
-library(tidyverse)
 library(stargazer)
-library(GGally)
+library(car)
+library(lmtest)
+library(tidyverse)
+library(GGally) 
+# For ggiraphExtra require: devtools, libcairo2-dev and libudunits2-dev
+# devtools::install_github("cardiomoon/ggiraphExtra")
+# library(ggiraph)
+# library(ggiraphExtra)
 ```
 
 # Descriptive Statistics of wage1 data
@@ -87,18 +94,74 @@ cov(desc.wage1)
 
 # Correlation Matrix
 ```{r, message=F, warning=F}
-ggpairs(desc.wage1, title = "Correlation Matrix")
+cor.graph <- ggpairs(desc.wage1, title = "Correlation Matrix")
+ggsave("MRO/Correltaion Matrix.png", cor.graph)
 ```
 
-# Regression Models
-```{r}
 # Model 1
+```{r, message=F, warning=F}
 model1 <- lm(wage ~ educ + exper + tenure, data = desc.wage1)
 stargazer(model1, type = "text", title = "lm(wage ~ educ + exper + tenure)", 
           style = "qje", out = "MRO/model1.doc")
-
-# Model 2
+#ggPredict(model1, se = T, interactive = T)
 ```
 
+# Multicollinearity of Model 1
+```{r}
+vif(model1)
+```
 
+# Checking Normal Distribution of Error Term (Model 1)
+```{r}
+shapiro.test(residuals(model1))
+(error.model1 <- ggplot(model1, aes(sample = model1$residuals)) +
+  stat_qq(col = "blue") +
+  stat_qq_line(col = "red", lty = 2) +
+  labs(x = "Theoretical Quantiles", y = "Sample Quantiles", title = "QQ Plot ERR1"))
+ggsave("MRO/QQ Plot ERR1.png", error.model1)
+```
 
+# Test of Heteroskedasticity of Model 1
+```{r}
+bptest(model1)
+```
+
+# Robust coefficients using White's robust SE (Model1 )
+```{r}
+coeftest(model1, vcov = hccm(model1, type = "hc0"))
+```
+
+# Model 2
+```{r}
+model2 <- lm(lwage ~ educ + exper + tenure, data = desc.wage1)
+stargazer(model2, type = "text", title = "lm(lwage ~ educ + exper + tenure)", 
+          style = "qje", out = "MRO/model2.doc")
+#ggPredict(model2, se = T, interactive = T)
+```
+
+# Multicollinearity of Model 2
+```{r}
+vif(model2)
+```
+
+# Checking Normal Distribution of Error Term (Model 2)
+```{r}
+shapiro.test(residuals(model2))
+(error.model2 <- ggplot(model2, aes(sample = model2$residuals)) +
+  stat_qq(col = "blue") +
+  stat_qq_line(col = "red", lty = 2) +
+  labs(x = "Theoretical Quantiles", y = "Sample Quantiles", title = "QQ Plot ERR2"))
+ggsave("MRO/QQ Plot ERR2.png", error.model2)
+```
+
+# Test of Heteroskedasticity of Model 2
+```{r}
+bptest(model2)
+```
+
+# Robust coefficients using White's robust SE (Model 2)
+```{r}
+coeftest(model2, vcov = hccm(model2, type = "hc0"))
+```
+
+# Reference
