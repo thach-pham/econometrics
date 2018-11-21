@@ -77,7 +77,7 @@ ggsave("MRO/Experience Distribution.png", exper.dist)
 ```
 
 # Distribution of Tenure
-```{r}
+```{r, message=F, warning=F}
 (tenure.dist <- ggplot(desc.wage1, aes(tenure)) + 
   geom_histogram(aes(y = ..density..), bindwidth = 0.5, colour = "blue", fill = "white") +
   geom_density(alpha = 0.2, fill = "#FF6666") +
@@ -88,7 +88,7 @@ ggsave("MRO/Tenure Distribution.png", tenure.dist)
 ```
 
 # Covariance and Correlation Matrix
-```{r}
+```{r, message=F, warning=F}
 cov(desc.wage1)
 ```
 
@@ -107,12 +107,12 @@ stargazer(model1, type = "text", title = "lm(wage ~ educ + exper + tenure)",
 ```
 
 # Multicollinearity of Model 1
-```{r}
+```{r, message=F, warning=F}
 vif(model1)
 ```
 
 # Checking Normal Distribution of Error Term (Model 1)
-```{r}
+```{r, message=F, warning=F}
 shapiro.test(residuals(model1))
 (error.model1 <- ggplot(model1, aes(sample = model1$residuals)) +
   stat_qq(col = "blue") +
@@ -122,17 +122,17 @@ ggsave("MRO/QQ Plot ERR1.png", error.model1)
 ```
 
 # Test of Heteroskedasticity of Model 1
-```{r}
+```{r, message=F, warning=F}
 bptest(model1)
 ```
 
 # Robust coefficients using White's robust SE (Model1 )
-```{r}
+```{r, message=F, warning=F}
 coeftest(model1, vcov = hccm(model1, type = "hc0"))
 ```
 
 # Model 2
-```{r}
+```{r, message=F, warning=F}
 model2 <- lm(lwage ~ educ + exper + tenure, data = desc.wage1)
 stargazer(model2, type = "text", title = "lm(lwage ~ educ + exper + tenure)", 
           style = "qje", out = "MRO/model2.doc")
@@ -140,12 +140,12 @@ stargazer(model2, type = "text", title = "lm(lwage ~ educ + exper + tenure)",
 ```
 
 # Multicollinearity of Model 2
-```{r}
+```{r, message=F, warning=F}
 vif(model2)
 ```
 
 # Checking Normal Distribution of Error Term (Model 2)
-```{r}
+```{r, message=F, warning=F}
 shapiro.test(residuals(model2))
 (error.model2 <- ggplot(model2, aes(sample = model2$residuals)) +
   stat_qq(col = "blue") +
@@ -155,12 +155,12 @@ ggsave("MRO/QQ Plot ERR2.png", error.model2)
 ```
 
 # Test of Heteroskedasticity of Model 2
-```{r}
+```{r, message=F, warning=F}
 bptest(model2)
 ```
 
 # Robust coefficients using White's robust SE (Model 2)
-```{r}
+```{r, message=F, warning=F}
 coeftest(model2, vcov = hccm(model2, type = "hc0"))
 ```
 
