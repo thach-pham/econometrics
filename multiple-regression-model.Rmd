@@ -106,6 +106,16 @@ stargazer(model1, type = "text", title = "lm(wage ~ educ + exper + tenure)",
 #ggPredict(model1, se = T, interactive = T)
 ```
 
+# Confidence Intervals of Model 1 at 95%
+```{r}
+confint(model1)
+```
+
+# F-test of Model 1
+```{r}
+linearHypothesis(model1, c("educ", "exper = 2 * educ", "tenure = 2 * exper"))
+```
+
 # Multicollinearity of Model 1
 ```{r, message=F, warning=F}
 vif(model1)
@@ -137,6 +147,16 @@ model2 <- lm(lwage ~ educ + exper + tenure, data = desc.wage1)
 stargazer(model2, type = "text", title = "lm(lwage ~ educ + exper + tenure)", 
           style = "qje", out = "MRO/model2.doc")
 #ggPredict(model2, se = T, interactive = T)
+```
+
+# Confidence Intervals of Model 2 at 95%
+```{r}
+confint(model2)
+```
+
+# F-test of Model 2
+```{r}
+linearHypothesis(model2, c("educ", "exper = 2 * educ", "tenure = 2 * exper"))
 ```
 
 # Multicollinearity of Model 2
